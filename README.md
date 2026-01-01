@@ -1,127 +1,97 @@
-# basic-human-decency.sh
+# dan siroker, if you're reading this: bro. cmon.
 
-> The export tool Dan Siroker should have shipped.
+so i spent my jan 1st of 2026 doing what the team should have done in like 2 hours
 
-```
-███████╗██╗  ██╗ ██████╗██╗  ██╗    ██╗   ██╗ ██████╗ ██╗   ██╗
-██╔════╝╚██╗██╔╝██╔════╝██║ ██╔╝    ╚██╗ ██╔╝██╔═══██╗██║   ██║
-█████╗   ╚███╔╝ ██║     █████╔╝      ╚████╔╝ ██║   ██║██║   ██║
-██╔══╝   ██╔██╗ ██║     ██╔═██╗       ╚██╔╝  ██║   ██║██║   ██║
-██║     ██╔╝ ██╗╚██████╗██║  ██╗       ██║   ╚██████╔╝╚██████╔╝
-╚═╝     ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝       ╚═╝    ╚═════╝  ╚═════╝
+## tl;dr
 
-██████╗ ███████╗██╗    ██╗██╗███╗   ██╗██████╗      █████╗ ██╗
-██╔══██╗██╔════╝██║    ██║██║████╗  ██║██╔══██╗    ██╔══██╗██║
-██████╔╝█████╗  ██║ █╗ ██║██║██╔██╗ ██║██║  ██║    ███████║██║
-██╔══██╗██╔══╝  ██║███╗██║██║██║╚██╗██║██║  ██║    ██╔══██║██║
-██║  ██║███████╗╚███╔███╔╝██║██║ ╚████║██████╔╝    ██║  ██║██║
-╚═╝  ╚═╝╚══════╝ ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝╚═════╝     ╚═╝  ╚═╝╚═╝
-```
-
-## Lazy?
-
-If you use Claude Code, just paste this:
+you use claude code?
 
 ```
 Ultrathink and Clone https://github.com/anaclumos/rewind-export-all-data, read through the script, and run it to export my Rewind data. Do not modify or delete any original Rewind files.
 ```
 
-## What Happened
+## ok so what happened
 
-[Rewind.ai](https://rewind.ai) was a macOS app that recorded your screen and audio 24/7, letting you search through everything you've ever seen or heard on your computer. It stored years of your personal data locally.
+[Rewind.ai](https://rewind.ai) was this mac app that recorded everything on your screen 24/7. years of your life, stored locally.
 
-In December 2025, Meta acquired the company (now called Limitless). The Rewind app is shutting down on **December 19, 2025**.
+then Meta bought them (theyre called Limitless now i guess??) and announced theyre killing the app on **December 19, 2025**.
 
-**They provided no official way to export your data.**
+cool cool cool. heres the fun part
 
-Your years of recordings, transcripts, and memories—locked behind an encrypted database with no key provided.
+**THEY GAVE US NO WAY TO EXPORT OUR DATA**
 
-This script is what Dan Siroker (CEO) should have shipped. Basic human decency.
+like... what?? years of recordings, transcripts, memories, all of it sitting behind encrypted sqlite and they just said "lol good luck". i cannot stress enough how insane this is
 
-## What This Script Does
+## what this thing does
 
-- **Decrypts** your SQLCipher database to plain SQLite (no password needed after export)
-- **Exports videos** with precise timestamps from the database (not folder names)
-- **Exports audio** recordings with accurate timing
-- **Preserves** all metadata: which app, which window, browser URLs
-- **Generates** a manifest with your complete usage history
+* open that encrypted database (sqlcipher to plain sqlite)
+* grabs all your videos with actual timestamps from the db
+* grabs audio too
+* keeps all the metadata (what app, what window, URLs, etc)
+* spits out a manifest so you can see wtf you even have
 
-## Credits
+## shoutout
 
-Database password discovered by [@m1guelpf](https://x.com/m1guelpf/status/1854959335161401492).
+[@m1guelpf](https://x.com/m1guelpf/status/1854959335161401492) figured out the database password
 
-The password is hardcoded and **identical for all Rewind installations**—a security oversight that now benefits users trying to access their own data.
+turns out its hardcoded and **the same for literally everyone**. incredible security guys. but hey it works in our favor now so im not complaining
 
-## Requirements
+## before you start
+
+you need this
 
 ```bash
 brew install sqlcipher
 ```
 
-Optional (for pretty JSON manifest):
+optional but makes the json output pretty
+
 ```bash
 brew install jq
 ```
 
-## Usage
+## how to use it
 
 ```bash
-# Clone and run
 git clone https://github.com/anaclumos/rewind-export-all-data.git
 cd rewind-export-all-data
 chmod +x basic-human-decency.sh
 ./basic-human-decency.sh
 ```
 
-### Options
+### flags n stuff
 
 ```
---backup-dir PATH   Output directory (default: ./backup)
---skip-videos       Skip video file copying (just export database)
---skip-audio        Skip audio file copying
---verbose, -v       Show detailed progress
---help, -h          Show help
+--backup-dir PATH   where to dump everything (default: ./backup)
+--skip-videos       dont copy videos, just the database
+--skip-audio        skip audio files
+--verbose, -v       if you wanna watch it work
+--help, -h          u know what this does
 ```
 
-### Examples
-
-```bash
-# Full export
-./basic-human-decency.sh
-
-# Export to external drive
-./basic-human-decency.sh --backup-dir /Volumes/Backup/rewind
-
-# Database only (fastest, ~35GB → ~35GB)
-./basic-human-decency.sh --skip-videos --skip-audio
-
-# See everything happening
-./basic-human-decency.sh --verbose
-```
-
-## Output
+## what you get
 
 ```
 ./backup/
-├── rewind.sqlite3              # Decrypted database (NO PASSWORD)
+├── rewind.sqlite3              # the good stuff, NO PASSWORD anymore
 ├── videos/
 │   └── YYYY-MM-DD/
 │       └── HHMMSS.mmm_app_window.mp4
 ├── audio/
 │   └── YYYY-MM-DD/
 │       └── HHMMSS.mmm_duration.m4a
-└── manifest.json               # Export metadata
+└── manifest.json               # index of everything
 ```
 
-## After Export
+## now you can actually query your own data
 
-Your data is now in plain SQLite. Query it however you want:
+your stuff is plain sqlite now. go nuts with claude
 
 ```bash
-# List all tables
+# see what tables exist
 sqlite3 backup/rewind.sqlite3 '.tables'
 
-# See your most-used apps
+# what apps did you use the most (prepare to be judged)
 sqlite3 backup/rewind.sqlite3 '
   SELECT bundleID, COUNT(*) as segments
   FROM segment
@@ -130,14 +100,14 @@ sqlite3 backup/rewind.sqlite3 '
   LIMIT 10;
 '
 
-# Search OCR text (everything you've ever seen on screen)
+# search for... uh... passwords you may have had on screen
 sqlite3 backup/rewind.sqlite3 "
   SELECT text FROM searchRanking
   WHERE text MATCH 'password'
   LIMIT 10;
 "
 
-# Get activity for a specific date
+# what were you doing on a specific day
 sqlite3 backup/rewind.sqlite3 "
   SELECT datetime(startDate), bundleID, windowName
   FROM segment
@@ -145,114 +115,115 @@ sqlite3 backup/rewind.sqlite3 "
   ORDER BY startDate;
 "
 
-# Export transcripts to text
+# dump all your transcripts
 sqlite3 backup/rewind.sqlite3 "
   SELECT word FROM transcript_word
   ORDER BY segmentId, timeOffset;
 " > all_transcripts.txt
 ```
 
-## Database Schema
+## database nerd stuff
 
-### Core Tables
+### tables
 
-| Table | Description |
+| Table | whats in it |
 |-------|-------------|
-| `frame` | Screenshots with precise timestamps (`createdAt`) |
-| `segment` | App focus windows: bundleID, windowName, browserUrl, startDate, endDate |
-| `video` | Video file paths and metadata |
-| `audio` | Audio recordings with startTime and duration |
-| `transcript_word` | Speech-to-text with word-level timing |
-| `node` | OCR text positions mapped to frames |
-| `searchRanking` | FTS5 full-text search index of all OCR text |
-| `doc_segment` | Links search results to frames and segments |
+| `frame` | screenshots with timestamps |
+| `segment` | app focus stuff: bundle id, window name, url, times |
+| `video` | video file paths |
+| `audio` | audio recordings |
+| `transcript_word` | speech to text, word by word |
+| `node` | OCR positions on screenshots |
+| `searchRanking` | full text search index (this is the good shit) |
+| `doc_segment` | links search results to frames |
 
-### Key Fields
+### schema if you care
 
 ```sql
--- frame: precise screenshot timing
 CREATE TABLE frame (
   id INTEGER PRIMARY KEY,
-  createdAt TEXT NOT NULL,           -- ISO 8601 with milliseconds
+  createdAt TEXT NOT NULL,           /* timestamp */
   imageFileName TEXT NOT NULL,
   segmentId INTEGER,
   videoId INTEGER,
   videoFrameIndex INTEGER
 );
 
--- segment: what app/window was active
 CREATE TABLE segment (
   id INTEGER PRIMARY KEY,
-  bundleID TEXT,                      -- com.google.Chrome, etc.
+  bundleID TEXT,                      /* like com.google.Chrome */
   startDate TEXT NOT NULL,
   endDate TEXT NOT NULL,
-  windowName TEXT,                    -- Window title
-  browserUrl TEXT                     -- URL if browser
+  windowName TEXT,
+  browserUrl TEXT
 );
 
--- transcript_word: speech with timing
 CREATE TABLE transcript_word (
   id INTEGER PRIMARY KEY,
   segmentId INTEGER NOT NULL,
   word TEXT NOT NULL,
-  timeOffset INTEGER NOT NULL,        -- Milliseconds from segment start
+  timeOffset INTEGER NOT NULL,        /* ms from segment start */
   duration INTEGER NOT NULL,
-  speechSource TEXT                   -- "me" or "others"
+  speechSource TEXT                   /* "me" or "others" */
 );
 ```
 
-## Technical Details
+## for the security folks
 
-### Original Encryption
+the original encryption:
+* SQLCipher 4
+* AES256CBC
+* PBKDF2 HMAC SHA512 with 256k iterations
+* SHA512 HMAC
+* 4096 byte pages
 
-- **Format**: SQLCipher 4
-- **Cipher**: AES-256-CBC (per page)
-- **KDF**: PBKDF2-HMAC-SHA512, 256,000 iterations
-- **HMAC**: SHA-512 for integrity
-- **Page size**: 4096 bytes
-
-### Data Location
+### where your data lives
 
 ```
 ~/Library/Application Support/com.memoryvault.MemoryVault/
-├── db-enc.sqlite3          # Encrypted database
-├── chunks/                 # Video files
-│   └── YYYYMM/DD/id        # H.264 MP4, ~5 min each, 0.5 fps
-└── snippets/               # Audio files
-    └── YYYY-MM-DDTHH:MM:SS/snippet.m4a
+├── db_enc.sqlite3          # encrypted db
+├── chunks/                 # videos
+│   └── YYYYMM/DD/id        # h264, ~5 min each
+└── snippets/               # audio
+    └── timestamp_folder/snippet.m4a
 ```
 
-## Safety
+## will this break my stuff?
 
-This script **only reads** from your Rewind data. It never modifies or deletes originals:
+no. reads only. copies only. never touches originals.
 
-- Database: read-only SQLCipher export
-- Videos/audio: `cp` (copy), not `mv` (move)
-- All writes go to `./backup/` only
+* database: readonly export
+* videos/audio: `cp` not `mv`
+* everything goes into `./backup/`
 
-## FAQ
+## questions youre gonna ask
 
-**Q: Is this legal?**
-A: You're accessing your own data on your own computer. Rewind stored it locally specifically for privacy. You have every right to export it.
+### is this legal??
 
-**Q: Will this work after December 19?**
-A: Yes. The data is stored locally. The script doesn't need Rewind servers.
+its YOUR data on YOUR computer. rewind stored it locally for privacy reasons. yes you can export your own stuff.
 
-**Q: How much space do I need?**
-A: Roughly 2x your current Rewind data. Check `~/Library/Application Support/com.memoryvault.MemoryVault/` size first.
+### works after dec 19?
 
-**Q: Can I just export the database without videos?**
-A: Yes. Use `--skip-videos --skip-audio` for just the searchable database with all metadata.
+yep. its all local.
 
-**Q: The script is slow. Is that normal?**
-A: Yes. SQLCipher uses 256,000 PBKDF2 iterations for key derivation. Larger databases take longer. Videos are the slowest part if you have many.
+### how much disk space?
 
-## See Also
+~2x your current rewind folder. check `~/Library/Application Support/com.memoryvault.MemoryVault/` first
 
-- [Kevin Chen's Rewind Teardown](https://kevinchen.co/blog/rewind-ai-app-teardown/) — Technical analysis of Rewind's architecture
-- [RewindMCP](https://github.com/pedramamini/RewindMCP) — Python library for querying Rewind's database
-- [@m1guelpf's discovery](https://x.com/m1guelpf/status/1854959335161401492) — Original password finding
+### can i skip the videos?
 
-## License
+ya. `--skip-videos --skip-audio` if you just want the searchable database
 
-[WTFPL](http://www.wtfpl.net/). Do what the fuck you want with your own data.
+### why is it so slow??
+
+256,000 PBKDF2 iterations. blame the encryption. videos take forever if you have a lot.
+
+## related stuff
+
+* [Kevin Chen's teardown](https://kevinchen.co/blog/rewind-ai-app-teardown/) ... how rewind actually works under the hood
+* [RewindMCP](https://github.com/pedramamini/RewindMCP) ... python library for querying the db
+* [@m1guelpf's tweet](https://x.com/m1guelpf/status/1854959335161401492) ... the hero who found the password
+
+## license
+
+[WTFPL](http://www.wtfpl.net/). its your data. do whatever.
