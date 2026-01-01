@@ -1,0 +1,37 @@
+# Backup output
+backup/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Temporary files
+*.tmp
+*.temp
+.video_map.tsv
+.audio_map.tsv
+
+# Logs
+*.log
+
+# SQLite
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
+
+# Exported media (don't commit user data)
+videos/
+audio/
+
+# Environment
+.env
+.env.local
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
