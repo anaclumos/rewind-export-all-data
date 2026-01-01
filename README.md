@@ -12,15 +12,34 @@ Ultrathink and Clone https://github.com/anaclumos/rewind-export-all-data, read t
 
 ## ok so what happened
 
-[Rewind.ai](https://rewind.ai) was this mac app that recorded everything on your screen 24/7. years of your life, stored locally.
+[Rewind.ai](https://rewind.ai) was this mac app that recorded everything on your screen 24/7. years of your life, stored locally. then Meta bought them and announced theyre killing the app on december 19, 2025. cool cool cool. heres the fun part...
 
-then Meta bought them (theyre called Limitless now i guess??) and announced theyre killing the app on **December 19, 2025**.
+THEY GAVE US NO WAY TO EXPORT OUR DATA
 
-cool cool cool. heres the fun part
+like... what? years of recordings, transcripts, memories, all of it sitting behind encrypted sqlite and they just said "lol good luck". i cannot stress enough how insane this is
 
-**THEY GAVE US NO WAY TO EXPORT OUR DATA**
+## questions youre gonna ask
 
-like... what?? years of recordings, transcripts, memories, all of it sitting behind encrypted sqlite and they just said "lol good luck". i cannot stress enough how insane this is
+### is this legal??
+
+its YOUR data on YOUR computer. rewind stored it locally for privacy reasons. yes you can export your own stuff.
+
+### works after dec 19?
+
+yep. its all local.
+
+### how much disk space?
+
+~2x your current rewind folder. check `~/Library/Application Support/com.memoryvault.MemoryVault/` first
+
+### can i skip the videos?
+
+ya. `--skip-videos --skip-audio` if you just want the searchable database
+
+### why is it so slow??
+
+256,000 PBKDF2 iterations. blame the encryption. videos take forever if you have a lot.
+
 
 ## what this thing does
 
@@ -195,28 +214,6 @@ no. reads only. copies only. never touches originals.
 * database: readonly export
 * videos/audio: `cp` not `mv`
 * everything goes into `./backup/`
-
-## questions youre gonna ask
-
-### is this legal??
-
-its YOUR data on YOUR computer. rewind stored it locally for privacy reasons. yes you can export your own stuff.
-
-### works after dec 19?
-
-yep. its all local.
-
-### how much disk space?
-
-~2x your current rewind folder. check `~/Library/Application Support/com.memoryvault.MemoryVault/` first
-
-### can i skip the videos?
-
-ya. `--skip-videos --skip-audio` if you just want the searchable database
-
-### why is it so slow??
-
-256,000 PBKDF2 iterations. blame the encryption. videos take forever if you have a lot.
 
 ## related stuff
 
