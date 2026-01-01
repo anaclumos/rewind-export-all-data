@@ -18,6 +18,14 @@
 ╚═╝  ╚═╝╚══════╝ ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝╚═════╝     ╚═╝  ╚═╝╚═╝
 ```
 
+## Lazy?
+
+If you use Claude Code, just paste this:
+
+```
+Ultrathink and Clone https://github.com/anaclumos/rewind-export-all-data, read through the script, and run it to export my Rewind data. Do not modify or delete any original Rewind files.
+```
+
 ## What Happened
 
 [Rewind.ai](https://rewind.ai) was a macOS app that recorded your screen and audio 24/7, letting you search through everything you've ever seen or heard on your computer. It stored years of your personal data locally.
