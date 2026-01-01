@@ -207,7 +207,7 @@ CREATE TABLE transcript_word (
 
 ```
 ~/Library/Application Support/com.memoryvault.MemoryVault/
-├── db-enc.sqlite3          # Encrypted database (~35GB typical)
+├── db-enc.sqlite3          # Encrypted database
 ├── chunks/                 # Video files
 │   └── YYYYMM/DD/id        # H.264 MP4, ~5 min each, 0.5 fps
 └── snippets/               # Audio files
@@ -237,7 +237,7 @@ A: Roughly 2x your current Rewind data. Check `~/Library/Application Support/com
 A: Yes. Use `--skip-videos --skip-audio` for just the searchable database with all metadata.
 
 **Q: The script is slow. Is that normal?**
-A: Decrypting a 35GB+ database takes time. The SQLCipher KDF uses 256,000 PBKDF2 iterations by design. Videos are the slowest part (copying hundreds of GB).
+A: Yes. SQLCipher uses 256,000 PBKDF2 iterations for key derivation. Larger databases take longer. Videos are the slowest part if you have many.
 
 ## See Also
 
